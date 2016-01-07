@@ -31,5 +31,9 @@ Store操作完之后通知View更新时指定Event在主线程中执行。
         updateUI();
     }
 
+![Android Flux][3]
+
+
   [1]: https://github.com/lgvalle/android-flux-todo-app
   [2]: https://github.com/greenrobot/EventBus/blob/master/HOWTO.md
+  [3]: https://raw.githubusercontent.com/dengyin2000/dengyin2000.github.io/master/public/images/android-flux.png
