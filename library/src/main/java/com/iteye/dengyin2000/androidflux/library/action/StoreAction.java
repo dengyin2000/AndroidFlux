@@ -5,11 +5,11 @@ import java.util.HashMap;
 /**
  * Created by lgvalle on 22/07/15.
  */
-public class Action {
+public class StoreAction {
     private final String type;
     private final HashMap<String, Object> data;
 
-    Action(String type, HashMap<String, Object> data) {
+    StoreAction(String type, HashMap<String, Object> data) {
         this.type = type;
         this.data = data;
     }
@@ -52,11 +52,11 @@ public class Action {
             return this;
         }
 
-        public Action build() {
+        public StoreAction build() {
             if (type == null || type.isEmpty()) {
                 throw new IllegalArgumentException("At least one key is required.");
             }
-            return new Action(type, data);
+            return new StoreAction(type, data);
         }
     }
 }

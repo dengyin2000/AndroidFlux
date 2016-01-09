@@ -25,7 +25,7 @@ public class ActionsCreator {
 
 
     public void create(String text) {
-        dispatcher.dispatch(
+        dispatcher.dispatchStoreAction(
                 TodoActions.TODO_CREATE,
                 TodoActions.KEY_TEXT, text
         );
@@ -33,14 +33,14 @@ public class ActionsCreator {
     }
 
     public void destroy(long id) {
-        dispatcher.dispatch(
+        dispatcher.dispatchStoreAction(
                 TodoActions.TODO_DESTROY,
                 TodoActions.KEY_ID, id
         );
     }
 
     public void undoDestroy() {
-        dispatcher.dispatch(
+        dispatcher.dispatchStoreAction(
                 TodoActions.TODO_UNDO_DESTROY
         );
     }
@@ -49,17 +49,17 @@ public class ActionsCreator {
         long id = todo.getId();
         String actionType = todo.isComplete() ? TodoActions.TODO_UNDO_COMPLETE : TodoActions.TODO_COMPLETE;
 
-        dispatcher.dispatch(
+        dispatcher.dispatchStoreAction(
                 actionType,
                 TodoActions.KEY_ID, id
         );
     }
 
     public void toggleCompleteAll() {
-        dispatcher.dispatch(TodoActions.TODO_TOGGLE_COMPLETE_ALL);
+        dispatcher.dispatchStoreAction(TodoActions.TODO_TOGGLE_COMPLETE_ALL);
     }
 
     public void destroyCompleted() {
-        dispatcher.dispatch(TodoActions.TODO_DESTROY_COMPLETED);
+        dispatcher.dispatchStoreAction(TodoActions.TODO_DESTROY_COMPLETED);
     }
 }

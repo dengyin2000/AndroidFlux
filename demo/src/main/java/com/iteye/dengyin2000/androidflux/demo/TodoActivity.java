@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 import com.iteye.dengyin2000.androidflux.demo.actionscreator.ActionsCreator;
 import com.iteye.dengyin2000.androidflux.demo.store.TodoStore;
-import com.iteye.dengyin2000.androidflux.library.action.UIUpdateEvent;
+import com.iteye.dengyin2000.androidflux.library.action.UIUpdateAction;
 import com.iteye.dengyin2000.androidflux.library.dispatcher.Dispatcher;
 
 import de.greenrobot.event.EventBus;
@@ -38,7 +38,7 @@ public class TodoActivity extends AppCompatActivity {
     }
 
     private void initDependencies() {
-        dispatcher = Dispatcher.get(new EventBus());
+        dispatcher = new Dispatcher(new EventBus());
         actionsCreator = ActionsCreator.get(dispatcher);
         todoStore = TodoStore.get(dispatcher);
     }
@@ -140,7 +140,7 @@ public class TodoActivity extends AppCompatActivity {
     }
 
 
-    public void onEventMainThread(UIUpdateEvent event) {
+    public void onEventMainThread(UIUpdateAction event) {
         updateUI();
     }
 }

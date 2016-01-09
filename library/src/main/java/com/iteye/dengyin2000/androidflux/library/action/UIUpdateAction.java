@@ -5,11 +5,11 @@ import java.util.HashMap;
 /**
  * Created by lgvalle on 22/07/15.
  */
-public class UIUpdateEvent {
+public class UIUpdateAction {
     private final String type;
     private final HashMap<String, Object> data;
 
-    UIUpdateEvent(String type, HashMap<String, Object> data) {
+    UIUpdateAction(String type, HashMap<String, Object> data) {
         this.type = type;
         this.data = data;
     }
@@ -52,11 +52,11 @@ public class UIUpdateEvent {
             return this;
         }
 
-        public UIUpdateEvent build() {
+        public UIUpdateAction build() {
             if (type == null || type.isEmpty()) {
                 throw new IllegalArgumentException("At least one key is required.");
             }
-            return new UIUpdateEvent(type, data);
+            return new UIUpdateAction(type, data);
         }
     }
 }

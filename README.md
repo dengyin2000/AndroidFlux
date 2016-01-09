@@ -9,11 +9,11 @@
 [greenrobot的Eventbus][2]有个非常好的特性，就是支持Event是在那个线程中执行，比如主线程或者后台线程等。所以这里可以很方便的指定Store的执行在后台线程。
 
     @Override
-    public void onEventAsync(Action action) {
+    public void onEventAsync(Action storeAction) {
         long id;
-        switch (action.getType()) {
+        switch (storeAction.getType()) {
             case TodoActions.TODO_CREATE:
-                String text = ((String) action.getData().get(TodoActions.KEY_TEXT));
+                String text = ((String) storeAction.getData().get(TodoActions.KEY_TEXT));
                 create(text);
                 try {
                     Thread.currentThread().sleep(10000);

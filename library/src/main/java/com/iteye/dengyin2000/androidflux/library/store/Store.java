@@ -1,6 +1,6 @@
 package com.iteye.dengyin2000.androidflux.library.store;
 
-import com.iteye.dengyin2000.androidflux.library.action.Action;
+import com.iteye.dengyin2000.androidflux.library.action.StoreAction;
 import com.iteye.dengyin2000.androidflux.library.dispatcher.Dispatcher;
 
 /**
@@ -14,7 +14,12 @@ public abstract class Store {
         this.dispatcher = dispatcher;
     }
 
-    public abstract void onEventAsync(Action action);
+    /**
+     * received storeAction that sent from ActionsCreator and dispatchStoreAction from Dispatcher.
+     *
+     * @param storeAction  Eventbus event
+     */
+    public abstract void onEventAsync(StoreAction storeAction);
 
 
 }

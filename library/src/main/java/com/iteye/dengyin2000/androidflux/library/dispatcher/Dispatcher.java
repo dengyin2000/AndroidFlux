@@ -1,7 +1,7 @@
 package com.iteye.dengyin2000.androidflux.library.dispatcher;
 
-import com.iteye.dengyin2000.androidflux.library.action.Action;
-import com.iteye.dengyin2000.androidflux.library.action.UIUpdateEvent;
+import com.iteye.dengyin2000.androidflux.library.action.StoreAction;
+import com.iteye.dengyin2000.androidflux.library.action.UIUpdateAction;
 
 import de.greenrobot.event.EventBus;
 
@@ -10,16 +10,8 @@ import de.greenrobot.event.EventBus;
  */
 public class Dispatcher {
     private EventBus bus;
-    private static Dispatcher instance;
 
-    public static Dispatcher get(EventBus bus) {
-        if (instance == null) {
-            instance = new Dispatcher(bus);
-        }
-        return instance;
-    }
-
-    Dispatcher(EventBus bus) {
+    public Dispatcher(EventBus bus) {
         this.bus = bus;
     }
 
@@ -32,7 +24,13 @@ public class Dispatcher {
         bus.unregister(cls);
     }
 
-    public void dispatch(String type, Object... data) {
+    /**
+     * dispatch the action of store type, Store will receive this action.
+     *
+     * @param type  action name
+     * @param data  data information
+     */
+    public void dispatchStoreAction(String type, Object... data) {
         if (isEmpty(type)) {
             throw new IllegalArgumentException("Type must not be empty");
         }
@@ -41,7 +39,7 @@ public class Dispatcher {
             throw new IllegalArgumentException("Data must be a valid list of key,value pairs");
         }
 
-        Action.Builder actionBuilder = Action.type(type);
+        StoreAction.Builder actionBuilder = StoreAction.type(type);
         int i = 0;
         while (i < data.length) {
             String key = (String) data[i++];
@@ -51,8 +49,30 @@ public class Dispatcher {
         post(actionBuilder.build());
     }
 
-    public void emitChange(UIUpdateEvent o) {
-        post(o);
+    /**
+     *  dispatch the action of ui update action, View will receive this action, View will do ui
+     *  update.
+     *
+     * @param type action name
+     * @param data data information
+     */
+    public void dispatchUIAction(String type, Object... data) {
+        if (isEmpty(type)) {
+            throw new IllegalArgumentException("Type must not be empty");
+        }
+
+        if (data.length % 2 != 0) {
+            throw new IllegalArgumentException("Data must be a valid list of key,value pairs");
+        }
+
+        UIUpdateAction.Builder actionBuilder = UIUpdateAction.type(type);
+        int i = 0;
+        while (i < data.length) {
+            String key = (String) data[i++];
+            Object value = data[i++];
+            actionBuilder.bundle(key, value);
+        }
+        post(actionBuilder.build());
     }
 
     private boolean isEmpty(String type) {

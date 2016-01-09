@@ -2,8 +2,8 @@ package com.iteye.dengyin2000.androidflux.demo.store;
 
 import com.iteye.dengyin2000.androidflux.demo.TodoActions;
 import com.iteye.dengyin2000.androidflux.demo.model.Todo;
-import com.iteye.dengyin2000.androidflux.library.action.Action;
-import com.iteye.dengyin2000.androidflux.library.action.UIUpdateEvent;
+import com.iteye.dengyin2000.androidflux.library.action.StoreAction;
+import com.iteye.dengyin2000.androidflux.library.action.UIUpdateAction;
 import com.iteye.dengyin2000.androidflux.library.dispatcher.Dispatcher;
 import com.iteye.dengyin2000.androidflux.library.store.Store;
 
@@ -44,11 +44,11 @@ public class TodoStore extends Store {
 
 
     @Override
-    public void onEventAsync(Action action) {
+    public void onEventAsync(StoreAction storeAction) {
         long id;
-        switch (action.getType()) {
+        switch (storeAction.getType()) {
             case TodoActions.TODO_CREATE:
-                String text = ((String) action.getData().get(TodoActions.KEY_TEXT));
+                String text = ((String) storeAction.getData().get(TodoActions.KEY_TEXT));
                 create(text);
                 try {
                     Thread.currentThread().sleep(10000);
@@ -59,7 +59,7 @@ public class TodoStore extends Store {
                 break;
 
             case TodoActions.TODO_DESTROY:
-                id = ((long) action.getData().get(TodoActions.KEY_ID));
+                id = ((long) storeAction.getData().get(TodoActions.KEY_ID));
                 destroy(id);
                 emitStoreChange();
                 break;
@@ -70,13 +70,13 @@ public class TodoStore extends Store {
                 break;
 
             case TodoActions.TODO_COMPLETE:
-                id = ((long) action.getData().get(TodoActions.KEY_ID));
+                id = ((long) storeAction.getData().get(TodoActions.KEY_ID));
                 updateComplete(id, true);
                 emitStoreChange();
                 break;
 
             case TodoActions.TODO_UNDO_COMPLETE:
-                id = ((long) action.getData().get(TodoActions.KEY_ID));
+                id = ((long) storeAction.getData().get(TodoActions.KEY_ID));
                 updateComplete(id, false);
                 emitStoreChange();
                 break;
@@ -178,12 +178,7 @@ public class TodoStore extends Store {
         Collections.sort(todos);
     }
 
-
-    UIUpdateEvent changeEvent() {
-        return UIUpdateEvent.type("update").build();
-    }
-
     void emitStoreChange() {
-        dispatcher.emitChange(changeEvent());
+        dispatcher.dispatchUIAction("update");
     }
 }
